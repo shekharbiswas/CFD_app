@@ -1,4 +1,4 @@
-# CFD Hedging Strategy Analysis Streamlit App
+# CFD Hedging strategy simulation app
 
 This Streamlit application simulates and compares a classic S&P 500 portfolio (Model A) against a portfolio that uses VIX-triggered short S&P 500 CFDs for hedging (Model B). Users can adjust various configuration parameters to see their impact on portfolio performance.
 
