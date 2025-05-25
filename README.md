@@ -9,8 +9,9 @@ This Streamlit application simulates and compares two investment portfolio strat
 
 Users can adjust various configuration parameters related to Model B's hedging strategy and CFD costs via an interactive sidebar to observe their impact on overall portfolio performance and risk characteristics. The simulation uses historical market data.
 
-[_Project Repository for Detailed Analysis Scripts_](https://github.com/shekharbiswas/CFD_Simulation)
-[_This Streamlit App Repository_](https://github.com/shekharbiswas/CFD_app)
+- [_Project Repository for Detailed Analysis Scripts_](https://github.com/shekharbiswas/CFD_Simulation)
+
+- [_This Streamlit App Repository_](https://github.com/shekharbiswas/CFD_app)
 
 ## Features
 
