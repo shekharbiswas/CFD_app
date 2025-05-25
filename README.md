@@ -1,3 +1,55 @@
+# CFD Hedging & VIX Momentum Strategy Simulation App
+
+## Overview
+
+This Streamlit application simulates and compares two investment portfolio strategies:
+
+*   **Model A (Classic):** A traditional portfolio with a fixed **80% S&P 500 equities and 20% cash** allocation.
+*   **Model B (VIX Momentum Hedge):** A portfolio with the same fixed 80/20 base equity/cash allocation, but which dynamically activates **short S&P 500 CFD positions** as a hedge. The decision to hedge or cover these CFD positions is driven by a **VIX momentum strategy**, which considers recent VIX percentage changes and absolute VIX levels.
+
+Users can adjust various configuration parameters related to Model B's hedging strategy and CFD costs via an interactive sidebar to observe their impact on overall portfolio performance and risk characteristics. The simulation uses historical market data.
+
+[_Project Repository for Detailed Analysis Scripts_](https://github.com/shekharbiswas/CFD_Simulation)
+[_This Streamlit App Repository_](https://github.com/shekharbiswas/CFD_app)
+
+## Features
+
+*   Interactive sidebar to configure simulation parameters for:
+    *   Initial Capital.
+    *   **Model B's VIX Momentum Strategy:**
+        *   CFD Hedge Ratio (proportion of equity to hedge).
+        *   VIX Absolute Cover Threshold.
+        *   *(Other VIX momentum parameters like lookback period, percentage change thresholds for short/cover, and consecutive days are currently fixed in `scripts/config.py` but could be added to the UI for more advanced control).*
+    *   **CFD Costs (for Model B):**
+        *   Broker Annual Financing Fee (markup/markdown relative to SOFR).
+        *   Spread Cost (in S&P 500 points per contract transaction).
+        *   CFD Initial Margin Percent.
+*   Fixed 80% Equity / 20% Cash base allocation for both Model A and Model B.
+*   Visual comparison of Model A vs. Model B portfolio values over time using an interactive Plotly chart.
+*   Summary metrics (Final Value, Total Return) for both portfolios displayed directly in the app.
+*   Highlighting of predefined analysis periods (e.g., COVID crisis, VIX spikes) on the performance plot.
+
+## 📁 Project Structure
+
+The project is organized as follows:
+
+```bash
+CFD_app/
+├── .devcontainer/ # Development container configuration (if used)
+├── data/ # Potentially for other data, currently primary CSV is at root
+├── scripts/ # Backend Python modules
+│ ├── config.py
+│ ├── signal_generation.py
+│ ├── simulation_engine.py
+│ └── (risk_metrics.py, data_loader.py - optional for future use)
+├── .gitignore
+├── README.md # This file
+├── app.py # Main Streamlit application script
+├── requirements.txt # Python dependencies
+└── vix_sp500_data.csv # Primary historical data file
+```
+
+
 
 ## 📜 Script Breakdown
 
