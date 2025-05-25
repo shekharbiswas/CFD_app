@@ -1,32 +1,35 @@
-# CFD Hedging strategy simulation app
 
-This Streamlit application simulates and compares a classic S&P 500 portfolio (Model A) against a portfolio that uses VIX-triggered short S&P 500 CFDs for hedging (Model B). Users can adjust various configuration parameters to see their impact on portfolio performance.
+## 📜 Script Breakdown
 
-[_details_](https://github.com/shekharbiswas/CFD_Simulation)
-## Features
+*   **`app.py`**: The main Streamlit application script that provides the user interface and orchestrates the simulation.
+*   **`vix_sp500_data.csv`**: The historical data file for S&P 500 prices, VIX levels, SOFR rates, and pre-calculated S&P 500 returns. Located in the project root.
+*   **`scripts/config.py`**: Stores static configuration parameters not controlled by the UI (e.g., VIX momentum rule details, fixed portfolio labels, plot colors).
+*   **`scripts/signal_generation.py`**: Implements the VIX momentum strategy to generate daily trading signals for Model B.
+*   **`scripts/simulation_engine.py`**: Contains the core functions (`simulate_portfolio_A` and `simulate_portfolio_B_momentum`) for running the day-by-day portfolio simulations.
+*   **`scripts/risk_metrics.py`**: (Currently not fully integrated into Streamlit for all metrics display) Provides functions for calculating a comprehensive set of financial risk and performance metrics.
+*   **`scripts/data_loader.py`**: (Currently, data loading for the main CSV is handled in `app.py`) This module would be used if fetching from an API or more complex local data processing were re-enabled.
+*   **`requirements.txt`**: Lists the Python libraries required to run the app.
 
-*   Interactive sidebar to configure simulation parameters:
-    *   Initial Capital
-    *   Equity Allocation
-    *   VIX Threshold for hedging
-    *   Hedge Ratio
-    *   CFD Cost parameters (financing fee, borrowing cost, spread)
-*   Visual comparison of Model A (Classic) vs. Model B (CFD-Hedged) portfolio values over time using an interactive Plotly chart.
-*   Summary metrics for both portfolios.
-*   Highlighting of specific analysis periods (e.g., COVID crisis) on the plot.
+## ⚙️ Setup and Configuration
 
-## Files
+1.  **API Key (Only if FMP fetching is re-enabled in `scripts/data_loader.py`):**
+    *   This project primarily uses the local `vix_sp500_data.csv`. However, if you modify `scripts/data_loader.py` to fetch live data from Financial Modeling Prep (FMP), you will need an FMP API key.
+    *   If using FMP, open `scripts/config.py` (or a dedicated secrets management file).
+    *   Replace the placeholder value for `FMP_API_KEY` with your actual FMP API key.
 
-*   `app.py`: The main Streamlit application script.
-*   `data/vix_sp500_data.csv`: The historical data file for S&P 500, VIX, and SOFR.
-*   `requirements.txt`: Python libraries required to run the app.
-*   `.streamlit/config.toml` (Optional): For custom Streamlit theming (not strictly required to run if defaults are okay).
+2.  **Data File (`vix_sp500_data.csv`):**
+    *   Ensure the `vix_sp500_data.csv` file is present in the **root directory** of the project (alongside `app.py`).
+    *   This CSV **must** contain the following columns: `date`, `S&P500`, `VIX`, `SOFR_Rate`, `SP500_Return`, `Prev_S&P500`.
+    *   The `app.py` script is configured to load data from this location.
 
-## How to Run Locally
+3.  **Review `scripts/config.py` (For Advanced/Static Parameters):**
+    *   While many parameters are adjustable via the Streamlit UI, some core VIX momentum rules and plotting defaults are set in `scripts/config.py`. Review this file for any deeper configuration needs.
+
+## 🚀 How to Run Locally
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/shekharbiswas/CFD_app.git
+    git clone https://github.com/shekharbiswas/CFD_app.git # Or your specific Streamlit app repo URL
     cd CFD_app
     ```
 
@@ -40,44 +43,61 @@ This Streamlit application simulates and compares a classic S&P 500 portfolio (M
     ```
 
 3.  **Install Dependencies:**
-    Ensure you have Python 3.8+ installed. Then, install the required libraries:
+    Ensure you have Python 3.8+ installed. Then, from the project root directory:
     ```bash
     pip install -r requirements.txt
     ```
+    (If `requirements.txt` is missing, manually install: `pip install streamlit pandas numpy plotly`)
 
-4.  **Run the Streamlit App:**
+4.  **Ensure Data and Scripts are in Place:**
+    *   `vix_sp500_data.csv` should be in the `CFD_app` root directory.
+    *   The `scripts` folder (containing `config.py`, `signal_generation.py`, `simulation_engine.py`) should be in the `CFD_app` root directory.
+
+5.  **Run the Streamlit App:**
     From the root directory of the cloned repository (`CFD_app/`), execute:
     ```bash
     streamlit run app.py
     ```
 
-5.  **View in Browser:**
-    Streamlit will typically open the app automatically in your default web browser. If not, it will provide a local URL (usually `http://localhost:8501`) that you can open.
+6.  **View in Browser:**
+    Streamlit will typically open the app automatically in your default web browser (e.g., `http://localhost:8501`).
 
-## Usage
+## 🛠 Usage
 
-*   Once the app is running, use the sidebar on the left to adjust the configuration parameters.
-*   Click the "🚀 Run Simulation & Plot" button to generate and display the portfolio comparison chart and summary metrics based on your selected parameters.
-*   Interact with the Plotly chart (zoom, pan, hover for details).
+*   Use the **sidebar** on the left to adjust configurable parameters for the simulation (Initial Capital, Model B Hedge Ratio, VIX Absolute Cover Threshold, CFD Costs).
+*   The base **Equity/Cash allocation is fixed at 80%/20%** for both models.
+*   Click "**🚀 Run Simulation & Plot**".
+*   View the interactive Plotly chart comparing portfolio values and summary metrics.
 
-## Data
+## 📊 Expected Output
 
-The application uses historical data from `data/vix_sp500_data.csv`. This file should contain columns for 'date', 'S&P500', 'VIX', and 'SOFR'.
+*   Console messages (if any, mostly for debugging if run locally outside Streamlit's direct management).
+*   An interactive Streamlit web page displaying:
+    *   Portfolio performance comparison chart.
+    *   Summary metrics (Final Value, Total Return).
+    *   Highlighted crisis periods on the chart.
 
-## Deployment
+## ⚡ Troubleshooting
 
-This app is structured to be easily deployable on Streamlit Community Cloud:
+*   **`FileNotFoundError: [Errno 2] No such file or directory: 'vix_sp500_data.csv'`**: Ensure `vix_sp500_data.csv` is in the project root directory (where `app.py` is located).
+*   **Module Not Found (e.g., `No module named 'scripts.config'`):** Ensure the `scripts` folder is in the same directory as `app.py` and that `scripts` contains an `__init__.py` file (even if empty) to be treated as a package (though often not strictly necessary for direct script imports if `app.py` and `scripts/` are in the same root and Python's path is set up as expected).
+*   **Plotly plots not showing**: Check browser pop-up blockers if running locally. Streamlit usually handles rendering well.
+*   **`KeyError` or `AttributeError`**: Often due to misnamed columns in the CSV, incorrect keys in `default_config_ui` within `app.py`, or missing parameters in the `cfg_object` passed to backend modules. Check error messages for specifics.
+*   **Data Issues**: If the `vix_sp500_data.csv` is missing required columns or has formatting issues, `load_and_prepare_data` in `app.py` might raise errors or return an empty DataFrame.
 
-1.  Ensure your GitHub repository is public.
+## 🌐 Deployment
+
+This app can be deployed on Streamlit Community Cloud:
+
+1.  Ensure your GitHub repository is public and contains `app.py`, the `scripts/` folder, `vix_sp500_data.csv`, and `requirements.txt`.
 2.  Go to [share.streamlit.io](https://share.streamlit.io/).
-3.  Connect your GitHub account.
-4.  Click "New app" and select this repository.
-5.  The main file path should be `app.py`.
-6.  Deploy.
+3.  Connect your GitHub account, select this repository, set the main file path to `app.py`, and deploy.
 
-## Contributing
+## 👤 Who Should Use This Project?
 
-Feel free to fork the repository, make improvements, and submit pull requests. For major changes, please open an issue first to discuss what you would like to change.
+*   **Finance Students & Educators:** For practical application of derivatives and quantitative simulation.
+*   **Portfolio and Fund Managers:** To explore VIX-based dynamic hedging concepts.
+*   **Retail Investors:** For educational insights into CFD hedging mechanics and trade-offs (**not investment advice**).
 
 ## License
 SB
