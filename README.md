@@ -13,6 +13,10 @@ Users can adjust various configuration parameters related to Model B's hedging s
 
 - [_This Streamlit App Repository_](https://github.com/shekharbiswas/CFD_app)
 
+
+![cfd_gif](https://github.com/user-attachments/assets/62769a6e-8207-495e-a8b0-bd99c3afc1e8)
+
+
 ## Features
 
 *   Interactive sidebar to configure simulation parameters for:
